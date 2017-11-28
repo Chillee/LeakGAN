@@ -88,13 +88,13 @@ class LeakGAN(object):
 
         feature_array = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length+1,
                                                      dynamic_size=False, infer_shape=True, clear_after_read=False)
-        real_goal_array = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length/self.step_size,
+        real_goal_array = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length//self.step_size,
                                                        dynamic_size=False, infer_shape=True, clear_after_read=False)
 
         gen_real_goal_array = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length,
                                                        dynamic_size=False, infer_shape=True, clear_after_read=False)
 
-        gen_o_worker_array = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length/self.step_size,
+        gen_o_worker_array = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length//self.step_size,
                                                        dynamic_size=False, infer_shape=True, clear_after_read=False)
 
         def _g_recurrence(i, x_t,h_tm1,h_tm1_manager, gen_o, gen_x,goal,last_goal,real_goal,step_size,gen_real_goal_array,gen_o_worker_array):
@@ -155,7 +155,7 @@ class LeakGAN(object):
 
         self.gen_o_worker_array = tf.transpose(self.gen_o_worker_array, perm=[1, 0,2,3])  # batch_size x seq_length * vocab*goal
 
-        sub_feature = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length/self.step_size,
+        sub_feature = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length//self.step_size,
                                                        dynamic_size=False, infer_shape=True, clear_after_read=False)
 
         all_sub_features = tensor_array_ops.TensorArray(dtype=tf.float32, size=self.sequence_length,
@@ -206,7 +206,7 @@ class LeakGAN(object):
 
             sub_feature = tf.cond(((((i) % step_size) > 0)),
                                lambda: sub_feature,
-                               lambda: (tf.cond(i > 0, lambda:sub_feature.write(i/step_size-1,tf.subtract(feature, feature_array.read(i - step_size))),
+                               lambda: (tf.cond(i > 0, lambda:sub_feature.write(i//step_size-1,tf.subtract(feature, feature_array.read(i - step_size))),
                                                        lambda: sub_feature)))
 
             all_sub_features = tf.cond(i > 0,lambda: tf.cond((i % step_size) > 0, lambda :all_sub_features.write(i-1,tf.subtract(feature,feature_array.read(i-i%step_size))),\
@@ -214,8 +214,8 @@ class LeakGAN(object):
                                             lambda : all_sub_features)
 
             real_goal_array = tf.cond(((i) % step_size) > 0, lambda: real_goal_array,
-                                                            lambda: tf.cond((i)/step_size  < self.sequence_length/step_size,
-                                                                        lambda :tf.cond(i>0,lambda :real_goal_array.write((i)/step_size, real_sub_goal),
+                                                            lambda: tf.cond((i)//step_size  < self.sequence_length//step_size,
+                                                                        lambda :tf.cond(i>0,lambda :real_goal_array.write((i)//step_size, real_sub_goal),
                                                                                             lambda :real_goal_array),
                                                                         lambda :real_goal_array))
             x_tp1 = tf.cond(i>0,lambda :ta_emb_x.read(i-1),
@@ -241,7 +241,7 @@ class LeakGAN(object):
         print(self.real_goal_array.shape)
         print(self.sub_feature.shape)
         self.pretrain_goal_loss = -tf.reduce_sum(1-tf.losses.cosine_distance(tf.nn.l2_normalize(self.sub_feature,2),tf.nn.l2_normalize(self.real_goal_array,2),2)
-        ) / (self.sequence_length * self.batch_size/self.step_size)
+        ) / (self.sequence_length * self.batch_size//self.step_size)
 
         with tf.name_scope("Manager_PreTrain_update"):
             pretrain_manager_opt = tf.train.AdamOptimizer(self.starter_learning_rate)

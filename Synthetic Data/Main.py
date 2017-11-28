@@ -6,7 +6,7 @@ from Discriminator import Discriminator
 from target_lstm import TARGET_LSTM
 from target_lstm20 import TARGET_LSTM20
 from LeakGANModel import  LeakGAN
-import cPickle
+import pickle
 import os
 #import numexpr as ne
 
@@ -164,7 +164,7 @@ def main():
     gen_data_loader = Gen_Data_loader(BATCH_SIZE,FLAGS.length)
     likelihood_data_loader = Gen_Data_loader(BATCH_SIZE,FLAGS.length) # For testing
     vocab_size = 5000
-    target_params = cPickle.load(open('save/target_params.pkl'))
+    target_params = pickle.load(open('save/target_params.pkl', 'rb'), encoding="latin1")
     dis_data_loader = Dis_dataloader(BATCH_SIZE,SEQ_LENGTH)
     discriminator = Discriminator(SEQ_LENGTH,num_classes=2,vocab_size=vocab_size,dis_emb_dim=dis_embedding_dim,filter_sizes=dis_filter_sizes,num_filters=dis_num_filters,
                         batch_size=BATCH_SIZE,hidden_dim=HIDDEN_DIM,start_token=START_TOKEN,goal_out_size=GOAL_OUT_SIZE,step_size=4)
