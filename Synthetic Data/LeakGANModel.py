@@ -238,8 +238,8 @@ class LeakGAN(object):
 
         self.real_goal_array = self.real_goal_array.stack()
         self.real_goal_array = tf.transpose(self.real_goal_array, perm=[1, 0, 2])
-        print self.real_goal_array.shape
-        print self.sub_feature.shape
+        print(self.real_goal_array.shape)
+        print(self.sub_feature.shape)
         self.pretrain_goal_loss = -tf.reduce_sum(1-tf.losses.cosine_distance(tf.nn.l2_normalize(self.sub_feature,2),tf.nn.l2_normalize(self.real_goal_array,2),2)
         ) / (self.sequence_length * self.batch_size/self.step_size)
 
@@ -286,7 +286,7 @@ class LeakGAN(object):
         self.all_sub_goals = tf.transpose(self.all_sub_goals, perm=[1, 0, 2])
         # self.all_sub_features = tf.nn.l2_normalize(self.all_sub_features, 2)
         self.Worker_Reward = 1-tf.losses.cosine_distance(tf.nn.l2_normalize(self.all_sub_features,2), tf.nn.l2_normalize(self.all_sub_goals,2), 2)
-        # print self.Worker_Reward.shape
+        # print(self.Worker_Reward.shape)
         self.worker_loss = -tf.reduce_sum(
             tf.multiply(self.Worker_Reward , tf.one_hot(tf.to_int32(tf.reshape(self.x, [-1])), self.vocab_size, 1.0, 0.0) * tf.log(
                 tf.clip_by_value(tf.reshape(self.g_predictions, [-1, self.vocab_size]), 1e-20, 1.0))
