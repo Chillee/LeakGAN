@@ -87,7 +87,7 @@ def target_loss(sess, target_lstm, data_loader):
     nll = []
     data_loader.reset_pointer()
 
-    for it in xrange(data_loader.num_batch):
+    for it in range(data_loader.num_batch):
         batch = data_loader.next_batch()
         g_loss = sess.run(target_lstm.pretrain_loss, {target_lstm.x: batch})
         nll.append(g_loss)
@@ -98,7 +98,7 @@ def pre_train_epoch(sess, trainable_model, data_loader):
     supervised_g_losses = []
     data_loader.reset_pointer()
 
-    for it in xrange(data_loader.num_batch):
+    for it in range(data_loader.num_batch):
         batch = data_loader.next_batch()
         _, g_loss,_,_ = trainable_model.pretrain_step(sess, batch,1.0)
         supervised_g_losses.append(g_loss)
@@ -131,7 +131,7 @@ def rescale( reward, rollout_num=1.0):
 def get_reward(model,dis, sess, input_x, rollout_num, dis_dropout_keep_prob):
     rewards = []
     for i in range(rollout_num):
-        for given_num in range(1, model.sequence_length / model.step_size):
+        for given_num in range(1, model.sequence_length // model.step_size):
             real_given_num = given_num * model.step_size
             feed = {model.x: input_x, model.given_num: real_given_num, model.drop_out: 1.0}
             samples = sess.run(model.gen_for_reward, feed)
@@ -151,7 +151,7 @@ def get_reward(model,dis, sess, input_x, rollout_num, dis_dropout_keep_prob):
         if i == 0:
             rewards.append(ypred)
         else:
-            rewards[model.sequence_length / model.step_size - 1] += ypred
+            rewards[model.sequence_length // model.step_size - 1] += ypred
     rewards = rescale(np.array(rewards), rollout_num)
     rewards = np.transpose(np.array(rewards)) / (1.0 * rollout_num)  # batch_size x seq_length
     return rewards
@@ -208,7 +208,7 @@ def main():
 
                 print('Start pre-training...')
                 log.write('pre-training...\n')
-                for epoch in xrange(PRE_EPOCH_NUM):
+                for epoch in range(PRE_EPOCH_NUM):
                     loss = pre_train_epoch(sess, leakgan, gen_data_loader)
                     if epoch % 5 == 0:
                         generate_samples(sess, leakgan, BATCH_SIZE, generated_num, eval_file, 0)
@@ -233,7 +233,7 @@ def main():
                         dis_data_loader.load_train_data(positive_file, negative_file)
                         for _ in range(3):
                             dis_data_loader.reset_pointer()
-                            for it in xrange(dis_data_loader.num_batch):
+                            for it in range(dis_data_loader.num_batch):
                                 x_batch, y_batch = dis_data_loader.next_batch()
                                 feed = {
                                     discriminator.D_input_x: x_batch,
@@ -251,7 +251,7 @@ def main():
         #  pre-train generator
                     print('Start pre-training...')
                     log.write('pre-training...\n')
-                    for epoch in xrange(PRE_EPOCH_NUM/10):
+                    for epoch in range(PRE_EPOCH_NUM//10):
                         loss = pre_train_epoch(sess, leakgan, gen_data_loader)
                         if epoch % 5 == 0:
                             generate_samples(sess, leakgan, BATCH_SIZE, generated_num, eval_file,0)
@@ -303,7 +303,7 @@ def main():
 
             for _ in range(3):
                 dis_data_loader.reset_pointer()
-                for it in xrange(dis_data_loader.num_batch):
+                for it in range(dis_data_loader.num_batch):
                     x_batch, y_batch = dis_data_loader.next_batch()
                     feed = {
                         discriminator.D_input_x: x_batch,

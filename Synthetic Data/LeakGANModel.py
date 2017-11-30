@@ -245,7 +245,7 @@ class LeakGAN(object):
 
         with tf.name_scope("Manager_PreTrain_update"):
             pretrain_manager_opt = tf.train.AdamOptimizer(self.starter_learning_rate)
-
+            print(self.pretrain_goal_loss, self.manager_params)
             self.pretrain_manager_grad, _ = tf.clip_by_global_norm(tf.gradients(self.pretrain_goal_loss, self.manager_params), self.grad_clip)
             self.pretrain_manager_updates = pretrain_manager_opt.apply_gradients(zip(self.pretrain_manager_grad, self.manager_params),global_step=global_step_pre)
         # self.real_goal_array = self.real_goal_array.stack()

@@ -1,0 +1,45 @@
+pre-training...
+epoch:	0	nll:	9.67451
+epoch:	5	nll:	9.02214
+pre-training...
+epoch:	0	nll:	8.62718
+epoch:	5	nll:	8.14559
+pre-training...
+epoch:	0	nll:	7.96271
+epoch:	5	nll:	7.96998
+pre-training...
+epoch:	0	nll:	7.96439
+epoch:	5	nll:	8.00176
+pre-training...
+epoch:	0	nll:	8.0244
+epoch:	5	nll:	8.06362
+pre-training...
+epoch:	0	nll:	8.05473
+epoch:	5	nll:	8.13518
+pre-training...
+epoch:	0	nll:	8.17028
+epoch:	5	nll:	8.2253
+pre-training...
+epoch:	0	nll:	8.3057
+epoch:	5	nll:	8.34599
+pre-training...
+epoch:	0	nll:	8.37702
+epoch:	5	nll:	8.36822
+pre-training...
+epoch:	0	nll:	8.37849
+epoch:	5	nll:	8.38013
+adversarial training...
+epoch:	0	nll:	8.20431
+epoch:	5	nll:	7.8713
+epoch:	10	nll:	7.54559
+epoch:	15	nll:	7.30762
+epoch:	20	nll:	7.17266
+epoch:	25	nll:	7.07895
+epoch:	30	nll:	6.98096
+epoch:	35	nll:	6.8382
+epoch:	40	nll:	6.95972
+epoch:	45	nll:	6.83784
+epoch:	50	nll:	6.98758
+epoch:	55	nll:	6.88326
+epoch:	60	nll:	6.90447
+epoch:	65	nll:	6.88263
