@@ -1,8 +1,8 @@
-﻿# LeakGAN
-The code of research paper [Long Text Generation via Adversarial Training with Leaked Information](https://arxiv.org/abs/1709.08624). 
+﻿# LeakGAN Python 3
+A fork of the code of research paper [Long Text Generation via Adversarial Training with Leaked Information](https://arxiv.org/abs/1709.08624) for python 3.
 ## Requirements
 * **Tensorflow r1.2.1**
-* Python 2.7
+* Python 3.0+
 * CUDA 7.5+ (For GPU)
 
 ## Introduction
